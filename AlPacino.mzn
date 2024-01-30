@@ -39,13 +39,8 @@ set of int: Films2000 = {getIndexOfString("eighty_eight_Minutes",Films),
                          getIndexOfString("The_Recruit",Films)}; 
 
 constraint
-  forall(i in Index where i != getIndexOfString("Jessica",Names)) (
-    (ChosenFilm[i] in Films2000) ->
-    (
-      (ChosenDay[i] = getIndexOfString("Monday",Day))
-       \/ 
-      (ChosenDay[i] = getIndexOfString("Friday",Day))
-    )
+  forall(i in Index where i != getIndexOfString("Jessica",Names) /\ ChosenFilm[i] in Films2000) (
+    ChosenDay[i] = getIndexOfString("Monday",Day) \/ ChosenDay[i] = getIndexOfString("Friday",Day)
   );
   
 
@@ -67,20 +62,12 @@ constraint forall(i in Index where ChosenFilm[i] = Latest1900) (
 % The releases shown before 8:00 were on consecutive days, as were the releases shown after 8:00
 
 
-% Contrainte pour les sorties avant 8h00
 constraint
   forall(i in Index where Times[ChosenTime[i]] < 1200) (
-    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1])
-    \/ 
-    (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
-  );
-  
-% Contrainte pour les sorties après 8h00
-constraint
+    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1]) \/ (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
+  ) /\
   forall(i in Index where Times[ChosenTime[i]] > 1200) (
-    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1])
-    \/ 
-    (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
+    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1]) \/ (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
   );
   
 % Indice 4 
@@ -93,8 +80,9 @@ set of int: WomenIndex = {getIndexOfString("Sally",Names),
                           getIndexOfString("Mary",Names)};  % Sally, Jessica, et Mary
 
 constraint
-  exists(i in MenIndex)  (Times[ChosenTime[i]] < 1200 /\ ChosenDay[i] != getIndexOfString("Wednesday",Day )  )
-  /\
+  exists(i in MenIndex)  (Times[ChosenTime[i]] < 1200 /\ ChosenDay[i] != getIndexOfString("Wednesday",Day )  );
+ 
+constraint 
   exists(j in WomenIndex)(Times[ChosenTime[j]] < 1200 /\ ChosenDay[j] != getIndexOfString("Wednesday",Day ) );
   
 % Indice 5 
@@ -121,13 +109,12 @@ constraint ChosenDay[getIndexOfString("Mary",Names)] mod 2 !=0 ;
 
 
 constraint
-  (exists(i in Index where ChosenFilm[i] = getIndexOfString("eighty_eight_Minutes",Films)) (
-    (Times[ChosenTime[i]] mod 60 = 20)
-    /\
-    (exists ( j in Index where ChosenDay[j] = getIndexOfString("Thursday",Day)) 
-      (Times[ChosenTime[i]] = Times[ChosenTime[j]] + 40)
-    
-  )));
+  exists(i in Index where ChosenFilm[i] = getIndexOfString("eighty_eight_Minutes",Films)) (
+    (Times[ChosenTime[i]] mod 60 = 20) /\
+    exists(j in Index where ChosenDay[j] = getIndexOfString("Thursday",Day)) (
+      Times[ChosenTime[i]] = Times[ChosenTime[j]] + 40
+    )
+  );
   
   
 
