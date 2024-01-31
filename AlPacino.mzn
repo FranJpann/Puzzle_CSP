@@ -12,9 +12,9 @@ enum Films = {Scarface, Scarecrow, Donnie_Brasco, eighty_eight_Minutes, The_Recr
 
 
 % Variables
-array[Index] of var Index: ChosenFilm;
-array[Index] of var Index: ChosenDay;
-array[Index] of var Index: ChosenTime;
+array[Index] of var Films: ChosenFilm;
+array[Index] of var Day: ChosenDay;
+array[Index] of var Times: ChosenTime;
 
 % Contraintes
 
@@ -22,78 +22,66 @@ constraint alldifferent(ChosenFilm);
 constraint alldifferent(ChosenDay);
 constraint alldifferent(ChosenTime);
 
+
 %fonction pour récuperer un index dans un array de string
-function int: getIndexOfString(string: str, 
-                               array[int] of string: string_array) = 
-   sum(  [ if str = string_array[i] 
-              then i
-           else 0 endif  
-          | i in index_set(string_array) ]
-   );
 
 
-% Indice 1 (euh celle la marche pas)
+% Indice 1 
 % Of the 20-hundreds releases, neither of which was Jessica's choice, one opened the week and one closed the week.
 
-set of int: Films2000 = {getIndexOfString("eighty_eight_Minutes",Films),
-                         getIndexOfString("The_Recruit",Films)}; 
+set of Films: Films2000 = {eighty_eight_Minutes,The_Recruit}; 
 
 constraint
-  forall(i in Index where i != getIndexOfString("Jessica",Names) /\ ChosenFilm[i] in Films2000) (
-    ChosenDay[i] = getIndexOfString("Monday",Day) \/ ChosenDay[i] = getIndexOfString("Friday",Day)
+  forall(i in Index where i != 3 /\ ChosenFilm[i] in Films2000) (
+    ChosenDay[i] = Monday \/ ChosenDay[i] = Friday
   );
   
-
-
 
 
 % Indice 2
 % The latest of the 19-hundreds releases was shown at 30 minutes past the hour.
 
-set of int: Films1900 = {1, 2, 3};
 
-var int: Latest1900 = getIndexOfString("Donnie_Brasco",Films);
-
-constraint forall(i in Index where ChosenFilm[i] = Latest1900) (
-    Times[ChosenTime[i]] mod 60 = 30
+constraint forall(i in Index where ChosenFilm[i] = Donnie_Brasco) (
+    ChosenTime[i] mod 60 = 30
   );
 
 % Indice 3 
 % The releases shown before 8:00 were on consecutive days, as were the releases shown after 8:00
-
+constraint
+  (ChosenTime[1] < 1200 /\ ChosenTime[2] < 1200) /\
+  (ChosenTime[1] >= 800 /\ ChosenTime[2] >= 800) ->
+    (ChosenDay[1] + 1 == ChosenDay[2] \/ ChosenDay[1] == ChosenDay[2]);
 
 constraint
-  forall(i in Index where Times[ChosenTime[i]] < 1200) (
-    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1]) \/ (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
-  ) /\
-  forall(i in Index where Times[ChosenTime[i]] > 1200) (
-    (i < 5 /\ ChosenDay[i] + 1 = ChosenDay[i + 1]) \/ (i > 1 /\ ChosenDay[i] - 1 = ChosenDay[i - 1])
-  );
+  (ChosenTime[3] >= 1200 /\ ChosenTime[4] >= 1200 /\ ChosenTime[5] >= 1200) /\
+  (ChosenTime[3] < 800 /\ ChosenTime[4] < 800 /\ ChosenTime[5] < 800) ->
+    (ChosenDay[3] + 1 == ChosenDay[4] /\ ChosenDay[4] + 1 == ChosenDay[5]);
+
+
   
 % Indice 4 
 % One of the men and one of the women had a showing before 800, but neither was mid-week
 
-set of int: MenIndex = {getIndexOfString("Mark",Names),     
-                        getIndexOfString("Laurie",Names)};  % Mark et Laurie
-set of int: WomenIndex = {getIndexOfString("Sally",Names),     
-                          getIndexOfString("Jessica",Names), 
-                          getIndexOfString("Mary",Names)};  % Sally, Jessica, et Mary
+set of Names: MenIndex = {Mark,Laurie};  % Mark et Laurie
+set of Names: WomenIndex = {Sally, Jessica,Mary};  % Sally, Jessica, et Mary
 
 constraint
-  exists(i in MenIndex)  (Times[ChosenTime[i]] < 1200 /\ ChosenDay[i] != getIndexOfString("Wednesday",Day )  );
+  exists(i in MenIndex)  (ChosenTime[i] < 1200 /\ ChosenDay[i] !=Wednesday  );
  
 constraint 
-  exists(j in WomenIndex)(Times[ChosenTime[j]] < 1200 /\ ChosenDay[j] != getIndexOfString("Wednesday",Day ) );
+  exists(j in WomenIndex)(ChosenTime[j] < 1200 /\ ChosenDay[j] != Wednesday );
   
 % Indice 5 
 % Mark, whose choice was Scarecrow, had a showing at a time of one hour and five minutes after that of Scarface
 
 constraint 
-  ChosenFilm[getIndexOfString("Mark",Names)] = getIndexOfString("Scarecrow",Films);
+  
+  ChosenFilm[2] = Scarecrow;
 
 constraint
-  exists(j in Index where ChosenFilm[j] = getIndexOfString("Scarface",Films)) (
-    Times[ChosenTime[getIndexOfString("Mark",Names)]] =  Times[ChosenTime[j]] + 65
+  exists(j in Index where ChosenFilm[j] = Scarface) (
+    ChosenTime[2] =  ChosenTime[j] + 65
 );
 
 
@@ -101,18 +89,18 @@ constraint
 % Indice 6
 % Neither Miss Farmer nor Miss Peters had a showing on an even-numbered day
   
-constraint ChosenDay[getIndexOfString("Jessica",Names)] mod 2 !=0 ;
-constraint ChosenDay[getIndexOfString("Mary",Names)] mod 2 !=0 ;
+constraint ChosenDay[3] mod 2 !=0 ;
+constraint ChosenDay[5] mod 2 !=0 ;
 
 % Indice 7
 % 88_Minutes showed at a time both 40 minutes to the hour and 40 minutes after the thursday showing
 
 
 constraint
-  exists(i in Index where ChosenFilm[i] = getIndexOfString("eighty_eight_Minutes",Films)) (
-    (Times[ChosenTime[i]] mod 60 = 20) /\
-    exists(j in Index where ChosenDay[j] = getIndexOfString("Thursday",Day)) (
-      Times[ChosenTime[i]] = Times[ChosenTime[j]] + 40
+  exists(i in Index where ChosenFilm[i] = eighty_eight_Minutes) (
+    (ChosenTime[i] mod 60 = 20) /\
+    exists(j in Index where ChosenDay[j] = Thursday) (
+      ChosenTime[i] = ChosenTime[j] + 40
     )
   );
   
@@ -122,7 +110,10 @@ constraint
 % Résolution
 solve satisfy;
 
+/*
+
 % Output section
 output [ Names[i] ++ " a choisi le film " ++ show(ChosenFilm[i]) ++ " le " ++ show(ChosenDay[i]) ++ " à " ++ show(Times[ChosenTime[i]]) ++ "\n" | i in Index];
 
 
+*/
