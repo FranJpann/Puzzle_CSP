@@ -5,10 +5,10 @@ set of int: Index = 1..5;
 
 
 % Données du problème
-array[Index] of string: Day= ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-array[Index] of int: Times = [1175,1180,1220,1230,1245];
-array[Index] of string: Names = ["Sally", "Mark", "Jessica", "Laurie", "Mary"];
-array[Index] of string: Films = ["Scarface", "Scarecrow", "Donnie_Brasco", "eighty_eight_Minutes", "The_Recruit"];
+enum Day= {Monday, Tuesday, Wednesday, Thursday, Friday};
+set of int: Times = {1175,1180,1220,1230,1245};
+enum Names = {Sally, Mark,Jessica, Laurie, Mary};
+enum Films = {Scarface, Scarecrow, Donnie_Brasco, eighty_eight_Minutes, The_Recruit};
 
 
 % Variables
