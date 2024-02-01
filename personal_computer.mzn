@@ -2,6 +2,9 @@ include "globals.mzn";
   
 predicate alldifferent_float(array[int] of var float:x) =
   forall(i,j in index_set(x) where i<j)(abs(x[i] - x[j]) >= 0.01);
+  
+function var float: intToFloatByTen(var int: x) =
+    x / 10;
 
 % Réponses
 % {15.6, 2.5, 500, 1349};
@@ -93,4 +96,4 @@ constraint exists(i, j in Index) (
 
 solve satisfy;
 
-output [ show(chosenMonitors[i]) ++ " " ++ show(chosenProcessors[i]) ++ " " ++ show(chosenHDs[i]) ++ " " ++ show(chosenPrices[i]) ++ "\n" | i in Index ]
+output [ show(intToFloatByTen(chosenMonitors[i])) ++ " " ++ show(intToFloatByTen(chosenProcessors[i])) ++ " " ++ show(chosenHDs[i]) ++ " " ++ show(chosenPrices[i]) ++ "\n" | i in Index ]
