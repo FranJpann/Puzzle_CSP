@@ -7,7 +7,7 @@ from py.vars import *
 class Hub:
     def __init__(self):
         self.mw = tk.Tk()
-        self.mw.title("Puzzle")
+        self.mw.title("Hub")
         self.mw.geometry("500x500")
         self.mw.configure(background="#FBF9F1")
 
