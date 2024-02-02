@@ -9,3 +9,7 @@ class Solveur:
 
     def getSolutions(self):
         return self.problem.solve(all_solutions=False)
+
+
+# solveur = Solveur("../mzn/personal_computer.mzn")
+# print(solveur.getSolutions())

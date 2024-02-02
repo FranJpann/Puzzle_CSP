@@ -1,5 +1,4 @@
 import tkinter as tk
-
 from py.hub import Hub
 
 
