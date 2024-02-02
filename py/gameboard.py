@@ -72,10 +72,61 @@ class GameBoard:
             i += 1
 
     def clicked(self, row, column):
-        print(row, column)
-        if self.matrice_text[row - 2][column - 2].get() == '':
-            self.matrice_text[row - 2][column - 2].set('x')
-        elif self.matrice_text[row - 2][column - 2].get() == 'x':
-            self.matrice_text[row - 2][column - 2].set('o')
+        real_row = row - 2
+        real_column = column - 2
+        if real_row <= 4:
+            row_limitMin = 0
+            row_limitMax = 5
+        elif real_row <= 9:
+            row_limitMin = 5
+            row_limitMax = 10
         else:
-            self.matrice_text[row - 2][column - 2].set('')
+            row_limitMin = 10
+            row_limitMax = 15
+
+        if real_column <= 4:
+            column_limitMin = 0
+            column_limitMax = 5
+        elif real_column <= 9:
+            column_limitMin = 5
+            column_limitMax = 10
+        else:
+            column_limitMin = 10
+            column_limitMax = 15
+
+        print(real_row, real_column, row_limitMin, row_limitMax, column_limitMin, column_limitMax)
+
+        if self.matrice_text[real_row][real_column].get() == '':
+            self.matrice_text[real_row][real_column].set('x')
+        elif self.matrice_text[real_row][real_column].get() == 'x':
+            # Met 'x' sur la ligne
+            for i in range(column_limitMin, column_limitMax):
+                mat = self.matrice_text[real_row][i]
+                mat_button = self.matrice_buttons[real_row][i]
+                if mat is not None:
+                    mat.set('x')
+                    mat_button["state"] = "disabled"
+            # Met 'x' sur la colonne
+            for j in range(row_limitMin, row_limitMax):
+                mat = self.matrice_text[j][real_column]
+                mat_button = self.matrice_buttons[j][real_column]
+                if mat is not None:
+                    mat.set('x')
+                    mat_button["state"] = "disabled"
+            self.matrice_text[real_row][real_column].set('o')
+            self.matrice_buttons[real_row][real_column]["state"] = "normal"
+        else:
+            for i in range(column_limitMin, column_limitMax):
+                mat = self.matrice_text[real_row][i]
+                mat_button = self.matrice_buttons[real_row][i]
+                if mat is not None:
+                    mat.set('')
+                    mat_button["state"] = "normal"
+            # Met 'x' sur la colonne
+            for j in range(row_limitMin, row_limitMax):
+                mat = self.matrice_text[j][real_column]
+                mat_button = self.matrice_buttons[j][real_column]
+                if mat is not None:
+                    mat.set('')
+                    mat_button["state"] = "normal"
+            self.matrice_text[real_row][real_column].set('')
