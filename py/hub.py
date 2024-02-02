@@ -16,7 +16,7 @@ class Hub:
         button1.pack()
         button2 = tk.Button(self.mw, text='Puzzle Computers', command=self.on_click_computers)
         button2.pack()
-        button3 = tk.Button(self.mw, text='Puzzle Zebre', command=self.on_click_zebre)
+        button3 = tk.Button(self.mw, text='Puzzle Pasta and wine', command=self.on_click_pastawine)
         button3.pack()
 
     def on_click_alpachino(self):
@@ -25,8 +25,8 @@ class Hub:
     def on_click_computers(self):
         self.launch_gameboard("Computers")
 
-    def on_click_zebre(self):
-        self.launch_zebre()
+    def on_click_pastawine(self):
+        self.launch_zebre(Pastawine)
 
     def launch_gameboard(self, puzzle):
         self.mw.destroy()
@@ -35,7 +35,7 @@ class Hub:
         gboard.build_grid(Columns.get(puzzle))
         gboard.build_constraints(Constraints.get(puzzle))
 
-    def launch_zebre(self):
+    def launch_zebre(self, puzzle):
         self.mw.destroy()
         interface_zebre = Interface_Zebre()
-        interface_zebre.build_grid()
+        interface_zebre.build_grid(puzzle)

@@ -13,14 +13,13 @@ enum Whines= {Australian, Argentine, Chilean, French, Italian};
 set of int: Ages= {30,35,40,45,50};
 
 
-% Variables (FAIRE PAREIL POUR AL PACINO !!!!!!! )
+% Variables
 array[Index] of var Shirts: chosenShirts ;
 array[Index] of var Names: chosenNames ;
 array[Index] of var Surnames: chosenSurnames ;
 array[Index] of var Pastas: chosenPastas ;
 array[Index] of var Whines: chosenWhines ;
 array[Index] of var Ages: chosenAges ;
-
 
 
 constraint alldifferent(chosenShirts);
