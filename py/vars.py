@@ -5,7 +5,7 @@ Columns = {
 
 Rows = {
     "Alpachino": ["Name", "Time", "Day"],
-    "Computers": ["Hard Disk", "Price", "Monitor"]
+    "Computers": ["Monitor", "Price", "Hard Disk"]
 }
 
 Data = {
