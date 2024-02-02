@@ -22,12 +22,12 @@ array[Index] of Whines: chosenWhines ;
 array[Index] of Ages: chosenAges ;
 
 
-constraint alldifferent(chosenShirts);
-constraint alldifferent(chosenNames);
-constraint alldifferent(chosenSurnames);
-constraint alldifferent(chosenPastas);
-constraint alldifferent(chosenWhines);
-constraint alldifferent(chosenAges);
+constraint alldifferent(chosenShirts) ;
+constraint alldifferent(chosenNames) ;
+constraint alldifferent(chosenSurnames) ;
+constraint alldifferent(chosenPastas) ;
+constraint alldifferent(chosenWhines) ;
+constraint alldifferent(chosenAges) ;
 
 
 test check_1() =
