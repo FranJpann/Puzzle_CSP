@@ -1,6 +1,6 @@
-Alpachino = {
-    "name": "Alpachino",
-    "file": "E:\Workspace\Puzzle_CSP\mzn\Alpachino.mzn",
+Alpacino = {
+    "name": "Alpacino",
+    "file": "E:\Workspace\Puzzle_CSP\mzn\Alpacino.mzn",
     "Columns": ["Film", "Day", "Time"],
     "Rows": ["Name", "Time", "Day"],
     "Data": {

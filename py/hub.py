@@ -11,15 +11,15 @@ class Hub:
         self.mw.title("Hub")
         self.mw.configure(background="#FBF9F1")
 
-        button1 = tk.Button(self.mw, text='Puzzle Alpachino', command=self.on_click_alpachino)
+        button1 = tk.Button(self.mw, text='Puzzle Alpachino', command=self.on_click_alpacino)
         button1.pack()
         button2 = tk.Button(self.mw, text='Puzzle Computers', command=self.on_click_computers)
         button2.pack()
         button3 = tk.Button(self.mw, text='Puzzle Pasta and wine', command=self.on_click_pastawine)
         button3.pack()
 
-    def on_click_alpachino(self):
-        self.launch_gameboard(Alpachino)
+    def on_click_alpacino(self):
+        self.launch_gameboard(Alpacino)
 
     def on_click_computers(self):
         self.launch_gameboard(Computers)

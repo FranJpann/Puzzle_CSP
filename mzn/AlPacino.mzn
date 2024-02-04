@@ -8,17 +8,18 @@ set of int: Index = 1..5;
 % Données du problème
 enum Day= {Monday, Tuesday, Wednesday, Thursday, Friday};
 set of int: Times = {1175,1180,1220,1230,1245};
-enum Names = {Sally, Mark,Jessica, Laurie, Mary};
+enum Names = {Mary, Laurie,Jessica, Mark, Sally};
 enum Films = {Scarface, Scarecrow, Donnie_Brasco, eighty_eight_Minutes, The_Recruit};
 
 
 % Variables
+array[Index] of var Names: ChosenNames;
 array[Index] of var Films: ChosenFilm;
 array[Index] of var Day: ChosenDay;
 array[Index] of var Times: ChosenTime;
 
 % Contraintes
-
+constraint alldifferent(ChosenNames);
 constraint alldifferent(ChosenFilm);
 constraint alldifferent(ChosenDay);
 constraint alldifferent(ChosenTime);

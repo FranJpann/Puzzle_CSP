@@ -108,9 +108,15 @@ class GameBoard:
                     if i == 0 and ".0" in mat_response[j][i]:
                         mat_response[j][i] = str(int(tmp[j] / 10))
 
-        elif self.puzzle.get("name") == "Alpachino":
-            print("Alpachino pas fonctionnel encore")
-            # temp = [solution.chosenDays, solution.chosenTimes, solution.chosenFilms, solution.chosenPrices]
+        elif self.puzzle.get("name") == "Alpacino":
+            temp = [solution.ChosenNames, solution.ChosenFilm, solution.ChosenDay, solution.ChosenTime]
+            mat_response = [[0 for j in range(len(temp))] for i in range(len(temp[0]))]
+            for i, tmp in enumerate(temp):
+                for j in range(len(tmp)):
+                    if i == 3:
+                        mat_response[j][i] = str(tmp[j])
+                    else:
+                        mat_response[j][i] = tmp[j]
         return mat_response
 
     def ButtonCheckAnswer(self):
@@ -122,7 +128,6 @@ class GameBoard:
         for i, value in enumerate(mznResult):
             if value not in self.reponse_matrice:
                 self.popUp("You loose!", "Nope!")
-                print(value)
                 return
 
         self.popUp("You win!", "Good job!")
