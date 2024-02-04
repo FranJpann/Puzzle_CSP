@@ -28,7 +28,10 @@ class GameBoard:
         largeur_cell = 30
         acc = 0
         for i in self.reponse_matrice:
-            i[0] = sub_title.get(title_row[0])[acc][:-1]
+            if(title_row[0]=="Monitor"):
+                i[0] = sub_title.get(title_row[0])[acc][:-1]
+            else:
+                i[0] = sub_title.get(title_row[0])[acc]
             acc += 1
         for row in title_row:
             self.canva = tk.Canvas(self.mw, width=30,
@@ -176,13 +179,23 @@ class GameBoard:
                     mat_button["state"] = "disabled"
             self.matrice_text[real_row][real_column].set('o')
             self.matrice_buttons[real_row][real_column]["state"] = "normal"
-            if (real_column // self.number_square == 0):
-                formatted_reponse = self.titles_colums[real_column][:-4]
-            elif (real_column // self.number_square == 1):
-                formatted_reponse = self.titles_colums[real_column][:-3]
-            elif (real_column // self.number_square == 2):
-                formatted_reponse = self.titles_colums[real_column][2:-3].replace(".", "")
-            self.reponse_matrice[real_row][1 + real_column // self.number_square] = formatted_reponse
+            if(self.titles_row[0]=="Monitor"):
+                if(real_column//self.number_square==0):
+                    formatted_reponse=self.titles_colums[real_column][:-4]
+                elif(real_column//self.number_square==1):
+                    formatted_reponse=self.titles_colums[real_column][:-3]
+                elif(real_column//self.number_square==2):
+                    formatted_reponse=self.titles_colums[real_column][2:-3].replace(".","")
+            else:
+                if(real_column//self.number_square==2):
+                    formatted_reponse=(int(self.titles_colums[real_column].split(":")[0])+12)*60+int(self.titles_colums[real_column].split(":")[1])
+                else:
+                    if(self.titles_colums[real_column]=="88 Minutes"):
+                        formatted_reponse="eighty_eight_Minutes"
+                    else:
+                        formatted_reponse=self.titles_colums[real_column].replace(" ","_")
+                self.reponse_matrice[real_row][1+real_column//self.number_square]=formatted_reponse
+
         else:
             for i in range(column_limitMin, column_limitMax):
                 mat = self.matrice_text[real_row][i]
