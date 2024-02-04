@@ -116,17 +116,11 @@ class GameBoard:
             mat_response = [[0 for j in range(len(temp))] for i in range(len(temp[0]))]
             for i, tmp in enumerate(temp):
                 for j in range(len(tmp)):
-                    if i == 3:
-                        mat_response[j][i] = str(tmp[j])
-                    else:
-                        mat_response[j][i] = tmp[j]
+                    mat_response[j][i] = tmp[j]
         return mat_response
 
     def ButtonCheckAnswer(self):
         mznResult = self.getArrayResultFromMnz()
-
-        print(self.reponse_matrice)
-        print(mznResult)
 
         for i, value in enumerate(mznResult):
             if value not in self.reponse_matrice:
@@ -179,13 +173,13 @@ class GameBoard:
                     mat_button["state"] = "disabled"
             self.matrice_text[real_row][real_column].set('o')
             self.matrice_buttons[real_row][real_column]["state"] = "normal"
-            if(self.titles_row[0]=="Monitor"):
-                if(real_column//self.number_square==0):
-                    formatted_reponse=self.titles_colums[real_column][:-4]
-                elif(real_column//self.number_square==1):
-                    formatted_reponse=self.titles_colums[real_column][:-3]
-                elif(real_column//self.number_square==2):
-                    formatted_reponse=self.titles_colums[real_column][2:-3].replace(".","")
+            if self.puzzle.get("name") == "Computers":
+                if (real_column // self.number_square == 0):
+                    formatted_reponse = self.titles_colums[real_column][:-4]
+                elif (real_column // self.number_square == 1):
+                    formatted_reponse = self.titles_colums[real_column][:-3]
+                elif (real_column // self.number_square == 2):
+                    formatted_reponse = self.titles_colums[real_column][2:-3].replace(".", "")
             else:
                 if(real_column//self.number_square==2):
                     formatted_reponse=(int(self.titles_colums[real_column].split(":")[0])+12)*60+int(self.titles_colums[real_column].split(":")[1])
@@ -195,6 +189,7 @@ class GameBoard:
                     else:
                         formatted_reponse=self.titles_colums[real_column].replace(" ","_")
                 self.reponse_matrice[real_row][1+real_column//self.number_square]=formatted_reponse
+            self.reponse_matrice[real_row][1 + real_column // self.number_square] = formatted_reponse
 
         else:
             for i in range(column_limitMin, column_limitMax):
