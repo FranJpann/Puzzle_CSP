@@ -3,6 +3,8 @@ import tkinter as tk
 
 
 class GameBoard:
+
+
     def __init__(self):
         self.mw = tk.Tk()
         self.mw.title("Puzzle")
@@ -13,6 +15,7 @@ class GameBoard:
         self.x_up = 2
         self.y_left = 2
         self.number_square = 5
+        self.reponse_matrice=[[None for i in range(4)] for j in range(self.number_square)]
         self.titles_colums = []
         self.titles_row = []
         self.matrice_buttons = [[None for i in range(15)] for j in range(15)]
@@ -20,6 +23,10 @@ class GameBoard:
 
     def build_titles(self, title_row, title_colum, sub_title):
         largeur_cell = 30
+        acc=0
+        for i in self.reponse_matrice:
+            i[0]=sub_title.get(title_row[0])[acc][:-1]
+            acc+=1
         for row in title_row:
             self.canva = tk.Canvas(self.mw, width=30,
                                    height=self.number_square * largeur_cell + 6 * (self.number_square - 1),
@@ -69,6 +76,16 @@ class GameBoard:
             self.canva.create_text(5, 5, text=constraint, fill="#000", anchor="nw")
             self.canva.grid(column=18, row=2 + i, rowspan=1 + nbline)
             i += 1 + nbline
+        self.button = tk.Button(self.mw, image=self.pixel,
+                                    width=400, height=35,
+                                    command=lambda: self.afficher_matric(),background="#FBF9F1", fg="black",text="Tester", compound='c',
+                                    padx=0, pady=0)
+        self.button.grid(row=2+i, column=18, padx=3, pady=3)
+
+
+
+    def afficher_matric(self):
+        print(self.reponse_matrice)
 
     def clicked(self, row, column):
         real_row = row - 2
@@ -114,6 +131,13 @@ class GameBoard:
                     mat_button["state"] = "disabled"
             self.matrice_text[real_row][real_column].set('o')
             self.matrice_buttons[real_row][real_column]["state"] = "normal"
+            if(real_column//self.number_square==0):
+                formatted_reponse=self.titles_colums[real_column][:-4]
+            elif(real_column//self.number_square==1):
+                formatted_reponse=self.titles_colums[real_column][:-3]
+            elif(real_column//self.number_square==2):
+                formatted_reponse=self.titles_colums[real_column][2:-3].replace(".","")
+            self.reponse_matrice[real_row][1+real_column//self.number_square]=formatted_reponse
         else:
             for i in range(column_limitMin, column_limitMax):
                 mat = self.matrice_text[real_row][i]
