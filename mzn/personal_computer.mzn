@@ -95,5 +95,3 @@ constraint exists(i, j in Index) (
 );
 
 solve satisfy;
-
-output [ show(intToFloatByTen(chosenMonitors[i])) ++ " " ++ show(intToFloatByTen(chosenProcessors[i])) ++ " " ++ show(chosenHDs[i]) ++ " " ++ show(chosenPrices[i]) ++ "\n" | i in Index ]

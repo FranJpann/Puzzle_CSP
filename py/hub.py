@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from interface_zebre import Interface_Zebre
 from py.gameboard import GameBoard
 from py.vars import *
 
@@ -15,6 +16,8 @@ class Hub:
         button1.pack()
         button2 = tk.Button(self.mw, text='Puzzle Computers', command=self.on_click_computers)
         button2.pack()
+        button3 = tk.Button(self.mw, text='Puzzle Pasta and wine', command=self.on_click_pastawine)
+        button3.pack()
 
     def on_click_alpachino(self):
         self.launch_gameboard("Alpachino")
@@ -22,9 +25,17 @@ class Hub:
     def on_click_computers(self):
         self.launch_gameboard("Computers")
 
+    def on_click_pastawine(self):
+        self.launch_zebre(Pastawine)
+
     def launch_gameboard(self, puzzle):
         self.mw.destroy()
         gboard = GameBoard()
         gboard.build_titles(Rows.get(puzzle), Columns.get(puzzle), Data)
         gboard.build_grid(Columns.get(puzzle))
         gboard.build_constraints(Constraints.get(puzzle))
+
+    def launch_zebre(self, puzzle):
+        self.mw.destroy()
+        interface_zebre = Interface_Zebre()
+        interface_zebre.build_grid(puzzle)
