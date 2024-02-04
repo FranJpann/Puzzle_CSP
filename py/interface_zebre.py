@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from mzn import Mzn
+from py.mzn import Mzn
 
 
 def on_option_selected(value, index):
@@ -28,7 +28,8 @@ class Interface_Zebre:
     def create_option_menu(self, frame, options, option_list):
         option_var = tk.StringVar()
         option_menu = ttk.OptionMenu(frame, option_var, *options,
-                                 command=lambda event: on_option_selected(option_var, options.index(option_var.get())))
+                                     command=lambda event: on_option_selected(option_var,
+                                                                              options.index(option_var.get())))
         option_menu.configure(width=10)
         option_var.set(options[0])
         option_list.append(option_var)
@@ -75,7 +76,14 @@ class Interface_Zebre:
 
     def buttonClick(self):
         arrayResult = self.getArrayResults()
-        print(self.getArrayresultFromMzn())
+        mznResult = self.getArrayresultFromMzn()
+        print(arrayResult)
+        print(mznResult)
+
+        if arrayResult == mznResult:
+            self.popUp("You win!", "Good job!")
+        else:
+            self.popUp("You loose!", "Nope!")
 
     def getArrayResults(self):
         mat_array = []
@@ -88,14 +96,16 @@ class Interface_Zebre:
 
     def getArrayresultFromMzn(self):
         file = self.puzzle.get("file")
-        mzn = Mzn(file)
+        solution = Mzn(file).getSolutions().solution
 
-        mat_array = []
-        for solution in mzn.getSolutions():
-            mat_array.append(solution.chosenShirts)
-            mat_array.append(solution.chosenNames)
-            mat_array.append(solution.chosenSurnames)
-            mat_array.append(solution.chosenPastas)
-            mat_array.append(solution.chosenWhines)
-            mat_array.append(solution.chosenAges)
-        return mat_array
+        chosenAges_str = []
+        for chosenAge in solution.chosenAges:
+            chosenAges_str.append(str(chosenAge) + " years")
+        return [solution.chosenShirts, solution.chosenNames, solution.chosenSurnames, solution.chosenPastas,
+                solution.chosenWhines, chosenAges_str]
+
+    def popUp(self, title, text):
+        top = tk.Toplevel(self.mw)
+        top.geometry("350x250")
+        top.title(title)
+        tk.Label(top, text=text, font=('Mistral 18 bold')).place(x=150, y=80)
