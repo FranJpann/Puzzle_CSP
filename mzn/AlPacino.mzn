@@ -1,6 +1,7 @@
 include "globals.mzn";
 
-% Déclaration des ensembles
+
+
 set of int: Index = 1..5; 
 
 
@@ -48,16 +49,24 @@ constraint forall(i in Index where ChosenFilm[i] = Donnie_Brasco) (
 
 % Indice 3 
 % The releases shown before 8:00 were on consecutive days, as were the releases shown after 8:00
-constraint
-  (ChosenTime[1] < 1200 /\ ChosenTime[2] < 1200) /\
-  (ChosenTime[1] >= 800 /\ ChosenTime[2] >= 800) ->
-    (ChosenDay[1] + 1 == ChosenDay[2] \/ ChosenDay[1] == ChosenDay[2]);
+
 
 constraint
-  (ChosenTime[3] >= 1200 /\ ChosenTime[4] >= 1200 /\ ChosenTime[5] >= 1200) /\
-  (ChosenTime[3] < 800 /\ ChosenTime[4] < 800 /\ ChosenTime[5] < 800) ->
-    (ChosenDay[3] + 1 == ChosenDay[4] /\ ChosenDay[4] + 1 == ChosenDay[5]);
-
+  (exists(i, j in Index where ChosenTime[i] < 1200 /\ ChosenTime[j] < 1200) (
+    (ChosenDay[i] + 1 = ChosenDay[j] \/ ChosenDay[i] = ChosenDay[j] + 1)) 
+    /\
+  exists(i, j, k in Index where ChosenTime[i] > 1200 /\ ChosenTime[j] > 1200 /\ ChosenTime[k] > 1200) (
+    (ChosenDay[i] + 1 = ChosenDay[j] /\ ChosenDay[j] + 1 = ChosenDay[k]))
+  )
+   
+  \/
+        
+  (exists(i, j in Index where ChosenTime[i] > 1200 /\ ChosenTime[j] > 1200) (
+    (ChosenDay[i] + 1 = ChosenDay[j] \/ ChosenDay[i] = ChosenDay[j] + 1)) 
+    /\
+   exists(i, j, k in Index where ChosenTime[i] < 1200 /\ ChosenTime[j] < 1200 /\ ChosenTime[k] < 1200) (
+    (ChosenDay[i] + 1 = ChosenDay[j] /\ ChosenDay[j] + 1 = ChosenDay[k]))
+  );
 
   
 % Indice 4 
@@ -75,17 +84,14 @@ constraint
 % Indice 5 
 % Mark, whose choice was Scarecrow, had a showing at a time of one hour and five minutes after that of Scarface
 
-constraint 
-  
-  ChosenFilm[2] = Scarecrow;
+constraint   
+  ChosenFilm[Mark] = Scarecrow;
 
 constraint
   exists(j in Index where ChosenFilm[j] = Scarface) (
-    ChosenTime[2] =  ChosenTime[j] + 65
+    ChosenTime[Mark] =  ChosenTime[j] + 65
 );
-
-
-  
+ 
 % Indice 6
 % Neither Miss Farmer nor Miss Peters had a showing on an even-numbered day
   
@@ -103,7 +109,6 @@ constraint
       ChosenTime[i] = ChosenTime[j] + 40
     )
   );
-  
   
 
 
