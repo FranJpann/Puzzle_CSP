@@ -4,7 +4,8 @@ from tkinter import ttk
 
 
 def on_option_selected(value, index):
-    check_constraint()
+    # check_constraint()
+    print("nouvel value")
 
 
 def create_option_menu(frame, options):
@@ -58,8 +59,10 @@ class Interface_Zebre:
         nbConstraints = len(constraints)
         for i, _constraints in enumerate(constraints):
             label = tk.Label(constraint_frame, text=_constraints)
-            if i >= (nbConstraints / 2): label.grid(row=int(i - nbConstraints / 2), column=1, padx=5, pady=5)
-            else: label.grid(row=i, column=0, padx=5, pady=5)
+            if i >= (nbConstraints / 2):
+                label.grid(row=int(i - nbConstraints / 2), column=1, padx=5, pady=5)
+            else:
+                label.grid(row=i, column=0, padx=5, pady=5)
 
     def clicked(self):
         print("ouais")
