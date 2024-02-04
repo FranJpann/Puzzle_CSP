@@ -64,10 +64,11 @@ class GameBoard:
     def build_constraints(self, liste_constraint):
         i = 0
         for constraint in liste_constraint:
-            self.canva = tk.Canvas(self.mw, width=800, height=30, background="#FBF9F1")
+            nbline = constraint.count("\n")
+            self.canva = tk.Canvas(self.mw, width=800, height=35 + 20 * nbline, background="#FBF9F1")
             self.canva.create_text(5, 5, text=constraint, fill="#000", anchor="nw")
-            self.canva.grid(column=18, row=2 + i)
-            i += 1
+            self.canva.grid(column=18, row=2 + i, rowspan=1 + nbline)
+            i += 1 + nbline
 
     def clicked(self, row, column):
         real_row = row - 2
