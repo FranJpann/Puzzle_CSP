@@ -19,20 +19,20 @@ class Hub:
         button3.pack()
 
     def on_click_alpachino(self):
-        self.launch_gameboard("Alpachino")
+        self.launch_gameboard(Alpachino)
 
     def on_click_computers(self):
-        self.launch_gameboard("Computers")
+        self.launch_gameboard(Computers)
 
     def on_click_pastawine(self):
         self.launch_zebre(Pastawine)
 
     def launch_gameboard(self, puzzle):
         self.mw.destroy()
-        gboard = GameBoard()
-        gboard.build_titles(Rows.get(puzzle), Columns.get(puzzle), Data)
-        gboard.build_grid(Columns.get(puzzle))
-        gboard.build_constraints(Constraints.get(puzzle))
+        gboard = GameBoard(puzzle)
+        gboard.build_titles(puzzle.get("Rows"), puzzle.get("Columns"), puzzle.get("Data"))
+        gboard.build_grid(puzzle.get("Columns"))
+        gboard.build_constraints(puzzle.get("Constraints"))
 
     def launch_zebre(self, puzzle):
         self.mw.destroy()

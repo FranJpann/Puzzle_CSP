@@ -1,11 +1,13 @@
 from random import randrange
 import tkinter as tk
 
+from py.mzn import Mzn
+
 
 class GameBoard:
 
 
-    def __init__(self):
+    def __init__(self, puzzle):
         self.mw = tk.Tk()
         self.mw.title("Puzzle")
         self.mw.configure(background="#FBF9F1")
@@ -20,6 +22,8 @@ class GameBoard:
         self.titles_row = []
         self.matrice_buttons = [[None for i in range(15)] for j in range(15)]
         self.matrice_text = [[None for i in range(15)] for j in range(15)]
+
+        self.puzzle = puzzle
 
     def build_titles(self, title_row, title_colum, sub_title):
         largeur_cell = 30
@@ -78,14 +82,45 @@ class GameBoard:
             i += 1 + nbline
         self.button = tk.Button(self.mw, image=self.pixel,
                                     width=400, height=35,
-                                    command=lambda: self.afficher_matric(),background="#FBF9F1", fg="black",text="Tester", compound='c',
+                                    command=lambda: self.ButtonCheckAnswer(),background="#FBF9F1", fg="black",text="Tester", compound='c',
                                     padx=0, pady=0)
         self.button.grid(row=2+i, column=18, padx=3, pady=3)
 
 
 
-    def afficher_matric(self):
+    def popUp(self, title, text):
+        top = tk.Toplevel(self.mw)
+        top.geometry("350x250")
+        top.title(title)
+        tk.Label(top, text=text, font=('Mistral 18 bold')).place(x=150, y=80)
+
+    def getArrayResultFromMnz(self):
+        file = self.puzzle.get("file")
+        solution = Mzn(file).getSolutions().solution
+
+        if self.puzzle.get("name") == "Computers":
+            temp = [solution.chosenMonitors, solution.chosenProcessors, solution.chosenHDs, solution.chosenPrices]
+        elif self.puzzle.get("name") == "Alpachnino":
+            print("Alpachino pas fonctionnel encore")
+            #temp = [solution.chosenDays, solution.chosenTimes, solution.chosenFilms, solution.chosenPrices]
+
+        mat_response = [[0 for j in range(len(temp))] for i in range(len(temp[0]))]
+
+        for i, tmp in enumerate(temp):
+            for j in range(len(tmp)):
+                mat_response[j][i] = tmp[j]
+
+        return mat_response
+
+    def ButtonCheckAnswer(self):
+        mznResult = self.getArrayResultFromMnz()
         print(self.reponse_matrice)
+        print(mznResult)
+
+        if self.reponse_matrice == mznResult:
+            self.popUp("You win!", "Good job!")
+        else:
+            self.popUp("You loose!", "Nope!")
 
     def clicked(self, row, column):
         real_row = row - 2
