@@ -1,7 +1,7 @@
 import minizinc
 
 
-class Solveur:
+class Mzn:
     def __init__(self, file):
         self.model = minizinc.Model(file)
         self.gecode = minizinc.Solver.lookup("gecode")
@@ -9,7 +9,3 @@ class Solveur:
 
     def getSolutions(self):
         return self.problem.solve(all_solutions=False)
-
-
-solveur = Solveur("../mzn/pastawine.mzn")
-print(solveur.getSolutions())

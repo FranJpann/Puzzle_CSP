@@ -46,6 +46,7 @@ Constraints = {
 }
 
 Pastawine = {
+    "file": "E:\Workspace\Puzzle_CSP\mzn\pastawine.mzn",
     "options_array": [
         ["", "red", "blue", "green", "white", "yellow"],
         ["", "Holly", "Andrea", "Julie", "Leslie", "Victoria"],
