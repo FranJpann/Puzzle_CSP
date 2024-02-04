@@ -6,7 +6,6 @@ from py.mzn import Mzn
 
 class GameBoard:
 
-
     def __init__(self, puzzle):
         self.mw = tk.Tk()
         self.mw.title("Puzzle")
@@ -17,7 +16,7 @@ class GameBoard:
         self.x_up = 2
         self.y_left = 2
         self.number_square = 5
-        self.reponse_matrice=[[None for i in range(4)] for j in range(self.number_square)]
+        self.reponse_matrice = [[None for i in range(4)] for j in range(self.number_square)]
         self.titles_colums = []
         self.titles_row = []
         self.matrice_buttons = [[None for i in range(15)] for j in range(15)]
@@ -27,15 +26,15 @@ class GameBoard:
 
     def build_titles(self, title_row, title_colum, sub_title):
         largeur_cell = 30
-        acc=0
+        acc = 0
         for i in self.reponse_matrice:
-            i[0]=sub_title.get(title_row[0])[acc][:-1]
-            acc+=1
+            i[0] = sub_title.get(title_row[0])[acc][:-1]
+            acc += 1
         for row in title_row:
             self.canva = tk.Canvas(self.mw, width=30,
                                    height=self.number_square * largeur_cell + 6 * (self.number_square - 1),
                                    background="#FBF9F1")
-            self.canva.create_text(5, self.number_square * largeur_cell, text=row, fill="#000", anchor="nw",angle=90)
+            self.canva.create_text(5, self.number_square * largeur_cell, text=row, fill="#000", anchor="nw", angle=90)
             self.canva.grid(column=0, rowspan=self.number_square, row=self.start_left)
             self.start_left += self.number_square
             for sub_row in sub_title.get(row):
@@ -81,12 +80,11 @@ class GameBoard:
             self.canva.grid(column=18, row=2 + i, rowspan=1 + nbline)
             i += 1 + nbline
         self.button = tk.Button(self.mw, image=self.pixel,
-                                    width=400, height=35,
-                                    command=lambda: self.ButtonCheckAnswer(),background="#FBF9F1", fg="black",text="Tester", compound='c',
-                                    padx=0, pady=0)
-        self.button.grid(row=2+i, column=18, padx=3, pady=3)
-
-
+                                width=400, height=35,
+                                command=lambda: self.ButtonCheckAnswer(), background="#FBF9F1", fg="black",
+                                text="Tester", compound='c',
+                                padx=0, pady=0)
+        self.button.grid(row=2 + i, column=18, padx=3, pady=3)
 
     def popUp(self, title, text):
         top = tk.Toplevel(self.mw)
@@ -100,27 +98,34 @@ class GameBoard:
 
         if self.puzzle.get("name") == "Computers":
             temp = [solution.chosenMonitors, solution.chosenProcessors, solution.chosenHDs, solution.chosenPrices]
-        elif self.puzzle.get("name") == "Alpachnino":
+            mat_response = [[0 for j in range(len(temp))] for i in range(len(temp[0]))]
+            for i, tmp in enumerate(temp):
+                for j in range(len(tmp)):
+                    if i == 0 or i == 1:
+                        mat_response[j][i] = str(tmp[j] / 10)
+                    else:
+                        mat_response[j][i] = str(tmp[j])
+                    if i == 0 and ".0" in mat_response[j][i]:
+                        mat_response[j][i] = str(int(tmp[j] / 10))
+
+        elif self.puzzle.get("name") == "Alpachino":
             print("Alpachino pas fonctionnel encore")
-            #temp = [solution.chosenDays, solution.chosenTimes, solution.chosenFilms, solution.chosenPrices]
-
-        mat_response = [[0 for j in range(len(temp))] for i in range(len(temp[0]))]
-
-        for i, tmp in enumerate(temp):
-            for j in range(len(tmp)):
-                mat_response[j][i] = tmp[j]
-
+            # temp = [solution.chosenDays, solution.chosenTimes, solution.chosenFilms, solution.chosenPrices]
         return mat_response
 
     def ButtonCheckAnswer(self):
         mznResult = self.getArrayResultFromMnz()
+
         print(self.reponse_matrice)
         print(mznResult)
 
-        if self.reponse_matrice == mznResult:
-            self.popUp("You win!", "Good job!")
-        else:
-            self.popUp("You loose!", "Nope!")
+        for i, value in enumerate(mznResult):
+            if value not in self.reponse_matrice:
+                self.popUp("You loose!", "Nope!")
+                print(value)
+                return
+
+        self.popUp("You win!", "Good job!")
 
     def clicked(self, row, column):
         real_row = row - 2
@@ -166,13 +171,13 @@ class GameBoard:
                     mat_button["state"] = "disabled"
             self.matrice_text[real_row][real_column].set('o')
             self.matrice_buttons[real_row][real_column]["state"] = "normal"
-            if(real_column//self.number_square==0):
-                formatted_reponse=self.titles_colums[real_column][:-4]
-            elif(real_column//self.number_square==1):
-                formatted_reponse=self.titles_colums[real_column][:-3]
-            elif(real_column//self.number_square==2):
-                formatted_reponse=self.titles_colums[real_column][2:-3].replace(".","")
-            self.reponse_matrice[real_row][1+real_column//self.number_square]=formatted_reponse
+            if (real_column // self.number_square == 0):
+                formatted_reponse = self.titles_colums[real_column][:-4]
+            elif (real_column // self.number_square == 1):
+                formatted_reponse = self.titles_colums[real_column][:-3]
+            elif (real_column // self.number_square == 2):
+                formatted_reponse = self.titles_colums[real_column][2:-3].replace(".", "")
+            self.reponse_matrice[real_row][1 + real_column // self.number_square] = formatted_reponse
         else:
             for i in range(column_limitMin, column_limitMax):
                 mat = self.matrice_text[real_row][i]
