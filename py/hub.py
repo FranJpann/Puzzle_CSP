@@ -9,7 +9,6 @@ class Hub:
     def __init__(self):
         self.mw = tk.Tk()
         self.mw.title("Hub")
-        self.mw.geometry("500x500")
         self.mw.configure(background="#FBF9F1")
 
         button1 = tk.Button(self.mw, text='Puzzle Alpachino', command=self.on_click_alpachino)
@@ -37,5 +36,5 @@ class Hub:
 
     def launch_zebre(self, puzzle):
         self.mw.destroy()
-        interface_zebre = Interface_Zebre()
-        interface_zebre.build_grid(puzzle)
+        interface_zebre = Interface_Zebre(puzzle)
+        interface_zebre.build_grid()
