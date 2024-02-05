@@ -11,7 +11,7 @@ class Hub:
         self.mw.title("Hub")
         self.mw.configure(background="#FBF9F1")
 
-        button1 = tk.Button(self.mw, text='Puzzle Alpachino', command=self.on_click_alpacino)
+        button1 = tk.Button(self.mw, text='Puzzle Alpacino', command=self.on_click_alpacino)
         button1.pack()
         button2 = tk.Button(self.mw, text='Puzzle Computers', command=self.on_click_computers)
         button2.pack()
